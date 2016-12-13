@@ -15,12 +15,15 @@ var term = process.argv.slice(3).join(' ');
 
 
 switch (command) {
+
     case 'my-tweets':
         var params = { screen_name: 'Justinc101011' };
         client.get('statuses/user_timeline', params, function(error, tweets, response) {
             if (!error) {
                 for (var i = 0; i < 20; i++) {
-                    console.log(tweets);
+                    console.log('Tweet Timestamp: ' + tweets[i].created_at);
+                    console.log('Tweet: ' + tweets[i].text);
+                    console.log('--------------------------------------------------------------------------------------------------');
                 }
             }
         });
@@ -32,18 +35,30 @@ switch (command) {
                 console.log('Error occurred: ' + err);
                 return;
             }
-            for (var i = 0; i < 5; i++) {
-                var artists = [];
-                for (var j = 0; j < data.tracks.items[i].artists.length; j++) {
-                    artists.push(data.tracks.items[i].artists[j].name);
-                }
+            if (typeof data.tracks.items[0] == 'undefined') {
                 console.log('--------------------------------------------------------------------------------------------------');
-                console.log('Artist: ' + artists.join(', '));
-                console.log('Track Name: ' + data.tracks.items[i].name);
-                console.log('Track Preview: ' + data.tracks.items[i].preview_url);
-                console.log('Album: ' + data.tracks.items[i].album.name);
+                console.log('Artist: Ace of Bass');
+                console.log('Track Name: The Sign');
+                console.log('Track Preview: https://p.scdn.co/mp3-preview/177e65fc2b8babeaf9266c0ad2a1cb1e18730ae4?cid=null');
+                console.log('Album: The Sign (US Album) [Remastered]');
+                console.log('==================================================================================================');
+            } else {
+                for (var i = 0; i < 50; i++) {
+                    if (typeof data.tracks.items[i] == 'undefined') {
+                        break;
+                    }
+                    var artists = [];
+                    for (var j = 0; j < data.tracks.items[i].artists.length; j++) {
+                        artists.push(data.tracks.items[i].artists[j].name);
+                    }
+                    console.log('--------------------------------------------------------------------------------------------------');
+                    console.log('Artist: ' + artists.join(', '));
+                    console.log('Track Name: ' + data.tracks.items[i].name);
+                    console.log('Track Preview: ' + data.tracks.items[i].preview_url);
+                    console.log('Album: ' + data.tracks.items[i].album.name);
+                }
+                console.log('==================================================================================================');
             }
-            console.log('==================================================================================================');
         });
         break;
 
@@ -53,23 +68,23 @@ switch (command) {
             console.log(OMDBLink);
             if (!error && response.statusCode == 200) {
                 console.log(body);
-                //                 * Title of the movie.
+                // Title of the movie
                 console.log('Title: ' + JSON.parse(body).Title);
-                // * Year the movie came out.
+                // Year the movie came out
                 console.log('Release Year: ' + JSON.parse(body).Year);
-                // * IMDB Rating of the movie.
+                // IMDB Rating of the movie
                 console.log('IMDB Rating: ' + JSON.parse(body).imdbRating);
-                // * Country where the movie was produced.
+                // Country where the movie was produced
                 console.log('Country of production: ' + JSON.parse(body).Country);
-                // * Language of the movie.
+                // Language of the movie
                 console.log('Language: ' + JSON.parse(body).Language);
-                // * Plot of the movie .
+                // Plot of the movie 
                 console.log('Plot: ' + JSON.parse(body).Plot);
-                // * Actors in the movie.
+                // Actors in the movie
                 console.log('Actors: ' + JSON.parse(body).Actors);
-                // * Rotten Tomatoes Rating.
+                // Rotten Tomatoes Rating
                 console.log('Rotten Tomatoes Rating: ' + JSON.parse(body).tomatoRating);
-                // * Rotten Tomatoes URL.
+                // Rotten Tomatoes URL
                 console.log('Rotten Tomatoes URL: ' + JSON.parse(body).tomatoURL);
             }
         });
