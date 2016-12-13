@@ -9,6 +9,7 @@ var client = new Twitter({
     access_token_secret: twitterKeysObject.access_token_secret
 });
 var request = require('request');
+var fs = require('fs');
 var command = process.argv[2];
 var term = process.argv.slice(3).join(' ');
 
@@ -53,23 +54,23 @@ switch (command) {
             if (!error && response.statusCode == 200) {
                 console.log(body);
                 //                 * Title of the movie.
-                console.log('Title: ' + body.Title);
+                console.log('Title: ' + JSON.parse(body).Title);
                 // * Year the movie came out.
-                console.log('Release Year: ' + body.Year);
+                console.log('Release Year: ' + JSON.parse(body).Year);
                 // * IMDB Rating of the movie.
-                console.log('IMDB Rating: ' + body.imdbRating);
+                console.log('IMDB Rating: ' + JSON.parse(body).imdbRating);
                 // * Country where the movie was produced.
-                console.log('Country of production: ' + body.Country);
+                console.log('Country of production: ' + JSON.parse(body).Country);
                 // * Language of the movie.
-                console.log('Language: ' + body.Language);
+                console.log('Language: ' + JSON.parse(body).Language);
                 // * Plot of the movie .
-                console.log('Plot: ' + body.Plot);
+                console.log('Plot: ' + JSON.parse(body).Plot);
                 // * Actors in the movie.
-                console.log('Actors: ' + body.Actors);
+                console.log('Actors: ' + JSON.parse(body).Actors);
                 // * Rotten Tomatoes Rating.
-                console.log('Rotten Tomatoes Rating: ' + body.tomatoRating);
+                console.log('Rotten Tomatoes Rating: ' + JSON.parse(body).tomatoRating);
                 // * Rotten Tomatoes URL.
-                console.log('Rotten Tomatoes URL: ' + body.tomatoURL);
+                console.log('Rotten Tomatoes URL: ' + JSON.parse(body).tomatoURL);
             }
         });
         break;
