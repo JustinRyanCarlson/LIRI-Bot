@@ -4,6 +4,7 @@
   "description": "TODO",
   "main": "index.js",
   "dependencies": {
+    "inquirer": "^2.0.0",
     "request": "^2.79.0",
     "spotify": "^0.3.0",
     "twitter": "^1.7.0"
