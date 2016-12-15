@@ -17,6 +17,8 @@ var inputTerm = process.argv.slice(3).join(' ');
 runCommand(inputCommand, inputTerm);
 
 
+// ON INQUIRER BRANCH TO TEST
+
 function runCommand(command, term) {
     switch (command) {
 
