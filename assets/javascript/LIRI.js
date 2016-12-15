@@ -18,6 +18,8 @@ runCommand(inputCommand, inputTerm);
 
 
 // ON INQUIRER BRANCH TO TEST
+// to log into a file make a function that console.logs and writes the log to a file and 
+// replace each console.log with this function
 
 function runCommand(command, term) {
     switch (command) {
