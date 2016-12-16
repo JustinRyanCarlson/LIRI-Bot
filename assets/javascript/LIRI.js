@@ -12,16 +12,13 @@ var request = require('request');
 var fs = require('fs');
 var inputCommand = process.argv[2];
 var inputTerm = process.argv.slice(3).join(' ');
+logger('User input: ' + inputCommand + ' ' + inputTerm);
+
 
 
 runCommand(inputCommand, inputTerm);
 
 
-// ON INQUIRER BRANCH TO TEST
-// to log into a file make a function that console.logs and writes the log to a file and 
-// replace each console.log with this function
-
-//DONT FORGET MR NOBODY CASE FOR OMDB
 
 function runCommand(command, term) {
     switch (command) {
@@ -31,11 +28,11 @@ function runCommand(command, term) {
             client.get('statuses/user_timeline', params, function(error, tweets, response) {
                 if (!error) {
                     for (var i = 0; i < 20; i++) {
-                        console.log('--------------------------------------------------------------------------------------------------');
-                        console.log('Tweet Timestamp: ' + tweets[i].created_at);
-                        console.log('Tweet: ' + tweets[i].text);
+                        logger('--------------------------------------------------------------------------------------------------');
+                        logger('Tweet Timestamp: ' + tweets[i].created_at);
+                        logger('Tweet: ' + tweets[i].text);
                     }
-                    console.log('==================================================================================================');
+                    logger('==================================================================================================');
                 }
             });
             break;
@@ -43,16 +40,16 @@ function runCommand(command, term) {
         case 'spotify-this-song':
             spotify.search({ type: 'track', query: term }, function(err, data) {
                 if (err) {
-                    console.log('Error occurred: ' + err);
+                    logger('Error occurred: ' + err);
                     return;
                 }
                 if (typeof data.tracks.items[0] == 'undefined') {
-                    console.log('--------------------------------------------------------------------------------------------------');
-                    console.log('Artist: Ace of Bass');
-                    console.log('Track Name: The Sign');
-                    console.log('Track Preview: https://p.scdn.co/mp3-preview/177e65fc2b8babeaf9266c0ad2a1cb1e18730ae4?cid=null');
-                    console.log('Album: The Sign (US Album) [Remastered]');
-                    console.log('==================================================================================================');
+                    logger('--------------------------------------------------------------------------------------------------');
+                    logger('Artist: Ace of Bass');
+                    logger('Track Name: The Sign');
+                    logger('Track Preview: https://p.scdn.co/mp3-preview/177e65fc2b8babeaf9266c0ad2a1cb1e18730ae4?cid=null');
+                    logger('Album: The Sign (US Album) [Remastered]');
+                    logger('==================================================================================================');
                 } else {
                     for (var i = 0; i < 20; i++) {
                         if (typeof data.tracks.items[i] == 'undefined') {
@@ -62,13 +59,13 @@ function runCommand(command, term) {
                         for (var j = 0; j < data.tracks.items[i].artists.length; j++) {
                             artists.push(data.tracks.items[i].artists[j].name);
                         }
-                        console.log('--------------------------------------------------------------------------------------------------');
-                        console.log('Artist: ' + artists.join(', '));
-                        console.log('Track Name: ' + data.tracks.items[i].name);
-                        console.log('Track Preview: ' + data.tracks.items[i].preview_url);
-                        console.log('Album: ' + data.tracks.items[i].album.name);
+                        logger('--------------------------------------------------------------------------------------------------');
+                        logger('Artist: ' + artists.join(', '));
+                        logger('Track Name: ' + data.tracks.items[i].name);
+                        logger('Track Preview: ' + data.tracks.items[i].preview_url);
+                        logger('Album: ' + data.tracks.items[i].album.name);
                     }
-                    console.log('==================================================================================================');
+                    logger('==================================================================================================');
                 }
             });
             break;
@@ -79,27 +76,28 @@ function runCommand(command, term) {
                 if (!error && response.statusCode == 200) {
                     if (typeof JSON.parse(body).Title == 'undefined') {
                         runCommand('movie-this', 'Mr. Nobody');
+                    } else {
+                        logger('--------------------------------------------------------------------------------------------------');
+                        // Title of the movie
+                        logger('Title: ' + JSON.parse(body).Title);
+                        // Year the movie came out
+                        logger('Release Year: ' + JSON.parse(body).Year);
+                        // IMDB Rating of the movie
+                        logger('IMDB Rating: ' + JSON.parse(body).imdbRating);
+                        // Country where the movie was produced
+                        logger('Country of production: ' + JSON.parse(body).Country);
+                        // Language of the movie
+                        logger('Language: ' + JSON.parse(body).Language);
+                        // Plot of the movie 
+                        logger('Plot: ' + JSON.parse(body).Plot);
+                        // Actors in the movie
+                        logger('Actors: ' + JSON.parse(body).Actors);
+                        // Rotten Tomatoes Rating
+                        logger('Rotten Tomatoes Rating: ' + JSON.parse(body).tomatoRating);
+                        // Rotten Tomatoes URL
+                        logger('Rotten Tomatoes URL: ' + JSON.parse(body).tomatoURL);
+                        logger('==================================================================================================');
                     }
-                    console.log('--------------------------------------------------------------------------------------------------');
-                    // Title of the movie
-                    console.log('Title: ' + JSON.parse(body).Title);
-                    // Year the movie came out
-                    console.log('Release Year: ' + JSON.parse(body).Year);
-                    // IMDB Rating of the movie
-                    console.log('IMDB Rating: ' + JSON.parse(body).imdbRating);
-                    // Country where the movie was produced
-                    console.log('Country of production: ' + JSON.parse(body).Country);
-                    // Language of the movie
-                    console.log('Language: ' + JSON.parse(body).Language);
-                    // Plot of the movie 
-                    console.log('Plot: ' + JSON.parse(body).Plot);
-                    // Actors in the movie
-                    console.log('Actors: ' + JSON.parse(body).Actors);
-                    // Rotten Tomatoes Rating
-                    console.log('Rotten Tomatoes Rating: ' + JSON.parse(body).tomatoRating);
-                    // Rotten Tomatoes URL
-                    console.log('Rotten Tomatoes URL: ' + JSON.parse(body).tomatoURL);
-                    console.log('==================================================================================================');
                 }
             });
             break;
@@ -107,7 +105,7 @@ function runCommand(command, term) {
         case 'do-what-it-says':
             fs.readFile('../../random.txt', 'utf8', function(err, data) {
                 if (err) {
-                    console.log('Error: ' + err);
+                    logger('Error: ' + err);
                 } else {
                     dataArr = data.split(',');
                     var caseCommand = dataArr[0];
@@ -118,6 +116,17 @@ function runCommand(command, term) {
             break;
 
         default:
-            console.log('Please enter a valid command');
+            logger('Please enter a valid command');
+            logger('Valid Commands are: my-tweets, spotify-this-song, movie-this, or do-what-it-says');
     }
+}
+
+
+
+function logger(stdout) {
+    var currentTime = Date.now();
+    console.log(stdout);
+    fs.appendFile('../../log.txt', currentTime + '           ' + stdout + '\n', function(err) {
+        if (err) throw err;
+    });
 }
