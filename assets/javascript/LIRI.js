@@ -21,6 +21,8 @@ runCommand(inputCommand, inputTerm);
 // to log into a file make a function that console.logs and writes the log to a file and 
 // replace each console.log with this function
 
+//DONT FORGET MR NOBODY CASE FOR OMDB
+
 function runCommand(command, term) {
     switch (command) {
 
@@ -52,7 +54,7 @@ function runCommand(command, term) {
                     console.log('Album: The Sign (US Album) [Remastered]');
                     console.log('==================================================================================================');
                 } else {
-                    for (var i = 0; i < 50; i++) {
+                    for (var i = 0; i < 20; i++) {
                         if (typeof data.tracks.items[i] == 'undefined') {
                             break;
                         }
@@ -75,6 +77,9 @@ function runCommand(command, term) {
             var OMDBLink = 'http://www.omdbapi.com/?t=' + term + '&y=&plot=short&tomatoes=true&r=json';
             request(OMDBLink, function(error, response, body) {
                 if (!error && response.statusCode == 200) {
+                    if (typeof JSON.parse(body).Title == 'undefined') {
+                        runCommand('movie-this', 'Mr. Nobody');
+                    }
                     console.log('--------------------------------------------------------------------------------------------------');
                     // Title of the movie
                     console.log('Title: ' + JSON.parse(body).Title);
