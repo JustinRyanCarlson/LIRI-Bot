@@ -12,10 +12,10 @@ var request = require('request');
 var fs = require('fs');
 var inputCommand = process.argv[2];
 var inputTerm = process.argv.slice(3).join(' ');
+
+
+
 logger('User input: ' + inputCommand + ' ' + inputTerm);
-
-
-
 runCommand(inputCommand, inputTerm);
 
 
